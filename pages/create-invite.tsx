@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
+import { Role } from '../types'
 
 export default function CreateInvite() {
-  const [role, setRole] = useState('DISCIPLINEE')
+  const [role, setRole] = useState<Role>(Role.DISCIPLINEE)
   const [inviteCode, setInviteCode] = useState('')
   const [error, setError] = useState('')
 
@@ -42,12 +43,12 @@ export default function CreateInvite() {
                 <select
                   id="role"
                   value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  onChange={(e) => setRole(e.target.value as Role)}
                   className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                 >
-                  <option value="ADMIN">Admin</option>
-                  <option value="DISCIPLINER">Discipliner</option>
-                  <option value="DISCIPLINEE">Disciplinee</option>
+                  <option value={Role.ADMIN}>Admin</option>
+                  <option value={Role.DISCIPLINER}>Discipliner</option>
+                  <option value={Role.DISCIPLINEE}>Disciplinee</option>
                 </select>
               </div>
               <button type="submit" className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">

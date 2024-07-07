@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
-import { Role } from '@prisma/client'
+import { Role } from '../../../types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // TODO: Add proper authentication to ensure only admins/discipliners can create invite codes
   const { role } = req.body
 
-  if (!role || !Object.values(Role).includes(role)) {
+  if (!role || !Object.values(Role).includes(role as Role)) {
     return res.status(400).json({ message: 'Invalid role' })
   }
 
