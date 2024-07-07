@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
 
 export default function Register() {
@@ -6,11 +7,29 @@ export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [inviteCode, setInviteCode] = useState('')
+  const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement registration logic
-    console.log('Registration attempt:', { name, email, password, inviteCode })
+    setError('')
+
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, inviteCode }),
+      })
+
+      if (res.ok) {
+        router.push('/login')
+      } else {
+        const data = await res.json()
+        setError(data.message)
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.')
+    }
   }
 
   return (

@@ -1,14 +1,35 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement login logic
-    console.log('Login attempt:', { email, password })
+    setError('')
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (res.ok) {
+        const { token } = await res.json()
+        localStorage.setItem('token', token)
+        router.push('/dashboard')
+      } else {
+        const data = await res.json()
+        setError(data.message)
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.')
+    }
   }
 
   return (
