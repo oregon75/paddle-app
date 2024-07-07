@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: { code: inviteCode },
     })
 
-    if (!invite || invite.usedById) {
+    if (!invite || invite.userId) {
       return res.status(400).json({ message: 'Invalid or already used invite code' })
     }
 
@@ -38,13 +38,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email,
         password: hashedPassword,
         role: invite.role,
+        inviteCode: {
+          connect: {
+            id: invite.id
+          }
+        }
       },
-    })
-
-    // Mark the invite code as used
-    await prisma.inviteCode.update({
-      where: { id: invite.id },
-      data: { usedById: user.id },
     })
 
     res.status(201).json({ message: 'User created successfully' })
