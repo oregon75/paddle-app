@@ -8,21 +8,22 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(DISCIPLINEE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(cuid())
+  name       String
+  email      String      @unique
+  password   String
+  role       Role        @default(DISCIPLINEE)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  inviteCode InviteCode?
 }
 
 model InviteCode {
   id        String    @id @default(cuid())
   code      String    @unique
   role      Role
-  usedBy    User?     @relation(fields: [usedById], references: [id])
-  usedById  String?   @unique
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?   @unique
   createdBy String
   createdAt DateTime  @default(now())
   expiresAt DateTime?
