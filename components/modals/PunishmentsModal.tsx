@@ -41,4 +41,51 @@ const PunishmentsModal: React.FC<PunishmentsModalProps> = ({ disciplinees, onPun
           <input
             type="text"
             value={newPunishment.name}
-            onChange={(e) => setNewPunishment({...newP
+            onChange={(e) => setNewPunishment({...newPunishment, name: e.target.value})}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Description</label>
+          <textarea
+            value={newPunishment.description}
+            onChange={(e) => setNewPunishment({...newPunishment, description: e.target.value})}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Severity (1-5)</label>
+          <input
+            type="number"
+            min="1"
+            max="5"
+            value={newPunishment.severity}
+            onChange={(e) => setNewPunishment({...newPunishment, severity: parseInt(e.target.value)})}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Disciplinee</label>
+          <select
+            value={newPunishment.disciplineeId}
+            onChange={(e) => setNewPunishment({...newPunishment, disciplineeId: e.target.value})}
+            className="w-full p-2 border rounded"
+            required
+          >
+            <option value="">Select a disciplinee</option>
+            {disciplinees.map(disciplinee => (
+              <option key={disciplinee.id} value={disciplinee.id}>{disciplinee.name}</option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Create Punishment
+        </button>
+      </form>
+    </div>
+  )
+}
+
+export default PunishmentsModal
