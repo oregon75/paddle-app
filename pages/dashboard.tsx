@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { User, Disciplinee } from '../types'
 
 type PunishmentsModalProps = {
   disciplinees: Disciplinee[]
