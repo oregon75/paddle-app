@@ -46,8 +46,20 @@ model User {
   chastityAssignments ChastityAssignment[]
   progressEntries    ProgressEntry[]
   rewards            Reward[]
+  inviteCode   InviteCode[]
   punishments        Punishment[]
   goals              Goal[]
+}
+
+model InviteCode {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  role      Role
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?   @unique
+  createdBy String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
 }
 
 model Task {
