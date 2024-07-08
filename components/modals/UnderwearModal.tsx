@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Disciplinee, UnderwearAssignment } from '../types'
 
 type UnderwearModalProps = {
   disciplinees: Disciplinee[]

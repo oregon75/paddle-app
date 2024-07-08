@@ -1,5 +1,6 @@
 // components/TasksModal.tsx
 import React, { useState } from 'react'
+import { Disciplinee, Task } from '../types'
 
 type TasksModalProps = {
   disciplinees: Disciplinee[]
