@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { FaTasks, FaUnderline, FaLock, FaChartLine, FaGift, FaExclamationTriangle, FaFlag } from 'react-icons/fa'
+import { FaTasks, FaTshirt, FaLock, FaChartLine, FaGift, FaExclamationTriangle, FaFlag } from 'react-icons/fa'
 import Layout from '../components/Layout'
 import Modal from '../components/Modal'
 import DisciplineesList from '../components/DisciplineesList'
@@ -14,7 +14,49 @@ import GoalsModal from '../components/modals/GoalsModal'
 import { User, Disciplinee } from '../types'
 
 export default function Dashboard() {
-  // ... (keep the existing code)
+  const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      router.push('/login')
+    } else {
+      fetchUserData(token)
+    }
+  }, [])
+
+  const fetchUserData = async (token: string) => {
+    try {
+      const res = await fetch('/api/user', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (res.ok) {
+        const userData = await res.json()
+        setUser(userData)
+      } else {
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+    }
+  }
+
+  if (!user) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <Layout>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}</h1>
+        {user.role === 'DISCIPLINER' && <DisciplinerDashboard user={user} />}
+        {user.role === 'DISCIPLINEE' && <DisciplineeDashboard user={user} />}
+      </div>
+    </Layout>
+  )
 }
 
 function DisciplinerDashboard({ user }: { user: User }) {
@@ -50,7 +92,7 @@ function DisciplinerDashboard({ user }: { user: User }) {
 
   const dashboardItems = [
     { icon: FaTasks, label: 'Tasks', modal: 'tasks' },
-    { icon: FaUnderline, label: 'Underwear', modal: 'underwear' },
+    { icon: FaTshirt, label: 'Underwear', modal: 'underwear' },
     { icon: FaLock, label: 'Chastity', modal: 'chastity' },
     { icon: FaChartLine, label: 'Progress', modal: 'progress' },
     { icon: FaGift, label: 'Rewards', modal: 'rewards' },
@@ -127,5 +169,10 @@ function DisciplinerDashboard({ user }: { user: User }) {
 }
 
 function DisciplineeDashboard({ user }: { user: User }) {
-  // ... (keep the existing code)
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold mb-4">Disciplinee Dashboard</h2>
+      <p>Welcome, {user.name}. Your dashboard is coming soon!</p>
+    </div>
+  )
 }
