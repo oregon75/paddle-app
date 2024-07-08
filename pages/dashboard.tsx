@@ -50,7 +50,7 @@ function DisciplinerDashboard({ user }: { user: User }) {
 
   const dashboardItems = [
     { icon: FaTasks, label: 'Tasks', modal: 'tasks' },
-    { icon: FaUnderwear, label: 'Underwear', modal: 'underwear' },
+    { icon: FaUnderline, label: 'Underwear', modal: 'underwear' },
     { icon: FaLock, label: 'Chastity', modal: 'chastity' },
     { icon: FaChartLine, label: 'Progress', modal: 'progress' },
     { icon: FaGift, label: 'Rewards', modal: 'rewards' },
