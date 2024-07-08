@@ -1,5 +1,5 @@
-// components/DisciplineesList.tsx
 import React from 'react'
+import { Disciplinee, Task } from '../types'
 
 type DisciplineesListProps = {
   disciplinees: Disciplinee[]
@@ -8,8 +8,24 @@ type DisciplineesListProps = {
 
 const DisciplineesList: React.FC<DisciplineesListProps> = ({ disciplinees, onTaskStatusUpdated }) => {
   const updateTaskStatus = async (taskId: string, newStatus: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED') => {
-    // ... (keep the existing updateTaskStatus function)
-    onTaskStatusUpdated()
+    const token = localStorage.getItem('token')
+    try {
+      const res = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+      })
+      if (res.ok) {
+        onTaskStatusUpdated()
+      } else {
+        console.error('Failed to update task status')
+      }
+    } catch (error) {
+      console.error('Error updating task status:', error)
+    }
   }
 
   return (
