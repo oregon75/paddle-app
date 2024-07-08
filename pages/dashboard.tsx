@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { FaTasks, FaUnderwear, FaLock, FaChartLine, FaGift, FaExclamationTriangle, FaFlag } from 'react-icons/fa'
+import { FaTasks, FaUnderline, FaLock, FaChartLine, FaGift, FaExclamationTriangle, FaFlag } from 'react-icons/fa'
 import Layout from '../components/Layout'
 import Modal from '../components/Modal'
 import DisciplineesList from '../components/DisciplineesList'
