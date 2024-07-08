@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from '../../types/jwt'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -14,7 +15,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const token = authHeader.split(' ')[1]
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload
+
+    if (typeof decoded === 'string' || !decoded.userId) {
+      return res.status(401).json({ message: 'Invalid token' })
+    }
+
     const discipliner = await prisma.user.findUnique({
       where: { id: decoded.userId },
     })
