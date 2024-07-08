@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Disciplinee, Reward } from '../types'
+import { Disciplinee, Reward } from '../../types'
 
 type RewardsModalProps = {
   disciplinees: Disciplinee[]

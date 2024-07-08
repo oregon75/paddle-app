@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Disciplinee, ProgressEntry } from '../types'
+import { Disciplinee, ProgressEntry } from '../../types'
 
 type ProgressModalProps = {
   disciplinees: Disciplinee[]
