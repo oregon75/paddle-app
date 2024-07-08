@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { JwtPayload } from '../../types/jwt'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST' && req.method !== 'GET') {
+  if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
@@ -29,38 +29,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(403).json({ message: 'Not authorized' })
     }
 
-    if (req.method === 'POST') {
-      const { title, description, intensity, isEnabled, dueDate, disciplineeId, sortOrder } = req.body
+    const { startDate, endDate, isTimerVisible, disciplineeId } = req.body
 
-      const task = await prisma.task.create({
-        data: {
-          title,
-          description,
-          intensity,
-          isEnabled,
-          dueDate: dueDate ? new Date(dueDate) : null,
-          sortOrder,
-          userId: disciplineeId
-        }
-      })
+    const assignment = await prisma.chastityAssignment.create({
+      data: {
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        isTimerVisible,
+        userId: disciplineeId
+      }
+    })
 
-      res.status(201).json(task)
-    } else if (req.method === 'GET') {
-      const tasks = await prisma.task.findMany({
-        where: {
-          user: {
-            disciplinerId: discipliner.id
-          }
-        },
-        orderBy: {
-          sortOrder: 'asc'
-        }
-      })
-
-      res.status(200).json(tasks)
-    }
+    res.status(201).json(assignment)
   } catch (error) {
-    console.error('Error handling task:', error)
-    res.status(500).json({ message: 'Error handling task' })
+    console.error('Error creating chastity assignment:', error)
+    res.status(500).json({ message: 'Error creating chastity assignment' })
   }
 }

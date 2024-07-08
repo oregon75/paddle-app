@@ -31,10 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const disciplinees = await prisma.user.findMany({
       where: { 
-        OR: [
-          { role: 'DISCIPLINEE', disciplinerId: user.id },
-          { role: 'DISCIPLINEE', disciplinerId: null }
-        ]
+        disciplinerId: user.id
       },
       select: { 
         id: true, 
@@ -44,7 +41,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           select: {
             id: true,
             title: true,
-            status: true
+            description: true,
+            status: true,
+            intensity: true,
+            isEnabled: true,
+            dueDate: true,
+            completionDate: true,
+            sortOrder: true
+          },
+          orderBy: {
+            sortOrder: 'asc'
+          }
+        },
+        underwearAssignments: {
+          select: {
+            id: true,
+            date: true,
+            underwear: true
+          },
+          orderBy: {
+            date: 'desc'
+          }
+        },
+        chastityAssignments: {
+          select: {
+            id: true,
+            startDate: true,
+            endDate: true,
+            isTimerVisible: true
+          },
+          orderBy: {
+            startDate: 'desc'
           }
         }
       }
