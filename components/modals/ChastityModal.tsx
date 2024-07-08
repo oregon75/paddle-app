@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Disciplinee, ChastityEntry } from '../types'
+import { Disciplinee, ChastityAssignment } from '../types'
 
 type ChastityModalProps = {
   disciplinees: Disciplinee[]
